@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rufo Paredes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── TOKENS ── */
+    :root {
+      --copper:      #c8561a;
+      --copper-lt:   #e07838;
+      --copper-pale: rgba(200, 86, 26, 0.12);
+      --copper-glow: rgba(200, 86, 26, 0.22);
+      --black:       #0c0c0c;
+      --surface:     #141414;
+      --border:      rgba(255, 255, 255, 0.06);
+      --border-warm: rgba(200, 86, 26, 0.20);
+      --white:       #f2ede7;
+      --gray:        #555;
+    }
+
+    /* ── BASE ── */
+    html, body {
+      background: linear-gradient(160deg, #0c0c0c 0%, #1a0a04 40%, #0c0c0c 100%);
+      background-attachment: fixed;
+      font-family: 'Jost', sans-serif;
+      color: var(--white);
+      min-height: 100vh;
+    }
+
+    /* ── PAGE WRAPPER ── */
+    .page {
+      max-width: 480px;
+      margin: 0 auto;
+      padding-bottom: 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ════════════════════════════════════
+       LANG TOGGLE — fixed top right
+    ════════════════════════════════════ */
+    #lang-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      background: rgba(20, 20, 20, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-warm);
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    #lang-toggle .lang-btn {
+      padding: 7px 14px;
+      font-family: 'Jost', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray);
+      user-select: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    #lang-toggle .lang-btn.active {
+      background: var(--copper);
+      color: #fff;
+      border-radius: 20px;
+    }
+    #lang-toggle .lang-sep {
+      width: 1px;
+      height: 14px;
+      background: var(--border-warm);
+      flex-shrink: 0;
+    }
+
+
+    /* ════════════════════════════════════
+       IDENTITY (name + handle + socials)
+    ════════════════════════════════════ */
+    .identity {
+      width: 100%;
+      padding: 48px 24px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .identity__avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--copper);
+      margin-bottom: 14px;
+      margin-top: 4px;
+    }
+    .identity__name {
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--white);
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .identity__handle {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gray);
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .identity__socials {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .social-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--surface);
+      border: 1px solid var(--border-warm);
+      border-radius: 20px;
+      padding: 8px 16px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .social-btn:hover { background: rgba(200,86,26,0.08); }
+    .social-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: var(--copper-lt);
+      flex-shrink: 0;
+    }
+    .social-btn__label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--copper-lt);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: calc(100% - 48px);
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border-warm), transparent);
+      margin: 20px 24px 22px;
+    }
+
+    /* ════════════════════════════════════
+       CONTENT AREA
+    ════════════════════════════════════ */
+    .content {
+      width: 100%;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* ── SECTION LABEL ── */
+    .sec-label {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 8px;
+      padding-left: 2px;
+    }
+
+    /* ── TOGGLE BUTTON (shared) ── */
+    .toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: 1px solid var(--border-warm);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-family: 'Jost', sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--copper);
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 14px;
+      margin-bottom: 2px;
+    }
+    .toggle-btn:hover { background: var(--copper-pale); }
+    .toggle-btn__arrow {
+      display: inline-block;
+      font-size: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    /* ── DROPDOWN PANEL (shared) ── */
+    .dropdown {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.4s ease, opacity 0.3s ease;
+    }
+    .dropdown.open {
+      opacity: 1;
+    }
+    .dropdown__inner {
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      margin-top: 14px;
+    }
+
+    /* ════════════════════════════════════
+       COLAB CARD
+    ════════════════════════════════════ */
+    .colab-card {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border-warm);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .colab-card:hover { border-color: var(--copper); }
+    .colab-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 140px; height: 140px;
+      background: radial-gradient(circle at top right, rgba(200,86,26,0.10), transparent 70%);
+      pointer-events: none;
+    }
+    .colab-card__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .colab-card__logo {
+      font-size: 28px;
+      font-weight: 200;
+      font-style: italic;
+      letter-spacing: 0.04em;
+      color: var(--white);
+    }
+    .colab-card__dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--copper);
+      box-shadow: 0 0 8px var(--copper-glow);
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+    .colab-card__tag {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--copper);
+      border: 1px solid var(--border-warm);
+      border-radius: 20px;
+      padding: 3px 10px;
+    }
+    .colab-card__desc {
+      font-size: 13px;
+      line-height: 1.7;
+      color: #d4cfc9;
+      margin-bottom: 4px;
+    }
+    .colab-card__cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--copper);
+      border-radius: 10px;
+      padding: 13px 16px;
+      margin-top: 16px;
+      cursor: pointer;
+    }
+    .colab-card__cta-text {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .colab-card__cta-arrow {
+      font-size: 16px;
+      color: rgba(255,255,255,0.55);
+    }
+
+    /* ════════════════════════════════════
+       ABOUT CARD
+    ════════════════════════════════════ */
+    .about-card {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .about-card__label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 12px;
+    }
+    .about-card__text {
+      font-size: 13px;
+      line-height: 1.75;
+      color: #d4cfc9;
+    }
+    .about-card__text strong { color: #e0dbd5; font-weight: 400; }
+    .about-card__continuation {
+      font-size: 13px;
+      line-height: 1.8;
+      color: #d4cfc9;
+    }
+
+    /* ── HOBBIES ── */
+    .hobbies-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .hobby-tag {
+      background: var(--copper-pale);
+      border: 1px solid var(--border-warm);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--copper-lt);
+    }
+
+    /* ════════════════════════════════════
+       LINK BUTTON (featured in items)
+    ════════════════════════════════════ */
+    .link-btn {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      text-decoration: none;
+      transition: border-color 0.2s;
+      cursor: pointer;
+    }
+    .link-btn:hover { border-color: var(--border-warm); }
+    .link-btn__left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .link-btn__icon {
+      width: 36px; height: 36px;
+      border-radius: 9px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .link-btn__title {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--white);
+      display: block;
+    }
+    .link-btn__sub {
+      font-size: 10px;
+      color: var(--gray);
+      letter-spacing: 0.04em;
+      display: block;
+      margin-top: 2px;
+    }
+    .link-btn__arrow {
+      font-size: 13px;
+      color: rgba(255,255,255,0.12);
+    }
+    .featured-group { width: 100%; margin-bottom: 20px; }
+
+    /* ════════════════════════════════════
+       IDEAS CARD
+    ════════════════════════════════════ */
+    .ideas-card {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      transition: border-color 0.2s;
+      cursor: pointer;
+    }
+    .ideas-card:hover { border-color: var(--border-warm); }
+    .ideas-card__header {
+      padding: 16px 18px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      background: linear-gradient(135deg, rgba(200,86,26,0.07) 0%, transparent 60%);
+    }
+    .ideas-card__title {
+      font-size: 22px;
+      font-weight: 200;
+      letter-spacing: 0.03em;
+      color: var(--white);
+      line-height: 1.1;
+    }
+    .ideas-card__title em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--copper-lt);
+    }
+    .ideas-card__badge {
+      background: var(--copper-pale);
+      border: 1px solid var(--border-warm);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 10px;
+      color: var(--copper-lt);
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+    .ideas-card__list { padding: 0 18px 14px; }
+    .ideas-card__row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 0;
+      border-top: 1px solid var(--border);
+    }
+    .ideas-card__num {
+      font-size: 12px;
+      color: var(--copper);
+      width: 28px;
+      flex-shrink: 0;
+    }
+    .ideas-card__item { font-size: 12px; color: #d4cfc9; flex: 1; }
+    .ideas-card__cta {
+      background: rgba(200,86,26,0.06);
+      border-top: 1px solid var(--border);
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .ideas-card__cta-text {
+      font-size: 11px;
+      color: var(--copper-lt);
+      letter-spacing: 0.06em;
+    }
+    .ideas-card__cta-arrow { font-size: 14px; color: var(--copper); }
+
+    /* ════════════════════════════════════
+       CONTACT
+    ════════════════════════════════════ */
+    .contact-row {
+      width: 100%;
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .contact-btn {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border-warm);
+      border-radius: 12px;
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    .contact-btn:hover { background: rgba(200,86,26,0.08); }
+    .contact-btn__icon { font-size: 18px; }
+    .contact-btn__label {
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+    }
+    .contact-form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .contact-form__input,
+    .contact-form__textarea {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border-warm);
+      border-radius: 10px;
+      padding: 11px 14px;
+      color: var(--white);
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      resize: none;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .contact-form__input:focus,
+    .contact-form__textarea:focus { border-color: var(--copper); }
+    .contact-form__input::placeholder,
+    .contact-form__textarea::placeholder { color: var(--gray); }
+    .contact-form__btn {
+      align-self: flex-end;
+      background: var(--copper);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 24px;
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .contact-form__btn:hover { background: var(--copper-lt); }
+    .contact-form__success {
+      font-size: 12px;
+      color: var(--copper-lt);
+      text-align: center;
+      padding: 8px 0;
+      display: none;
+    }
+    .contact-form__input--error {
+      border-color: #e05555 !important;
+    }
+
+    /* ── FOOTER ── */
+    .footer-brand {
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.16em;
+      color: rgba(255,255,255,0.07);
+      text-align: center;
+    }
+    /* ════════════════════════════════════
+       IDEAS PAGE
+    ════════════════════════════════════ */
+    .ideas-page__header {
+      width: 100%;
+      padding: 20px 20px 0;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: 1px solid var(--border-warm);
+      border-radius: 20px;
+      padding: 7px 16px;
+      font-family: 'Jost', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--copper-lt);
+      cursor: pointer;
+      margin-bottom: 24px;
+      transition: background 0.2s;
+    }
+    .back-btn:hover { background: var(--copper-pale); }
+    .back-btn__arrow { font-size: 14px; }
+    .ideas-page__eyebrow {
+      font-size: 9px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 6px;
+    }
+    .ideas-page__title {
+      font-size: 30px;
+      font-weight: 200;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      margin-bottom: 8px;
+      line-height: 1.15;
+    }
+    .ideas-page__title em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--copper-lt);
+    }
+    .ideas-page__sub {
+      font-size: 12px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 8px;
+    }
+
+    /* IDEA CARD */
+    .idea-item {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s;
+    }
+    .idea-item:hover { border-color: var(--border-warm); }
+    .idea-item__top { display: none; }
+    .idea-item__num {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--copper);
+      letter-spacing: 0.06em;
+      flex-shrink: 0;
+    }
+    .idea-item__tag { display: none; }
+    .idea-item__title {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 10px;
+      line-height: 1.3;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .idea-item__desc {
+      font-size: 12px;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 14px;
+    }
+    .idea-item__section {
+      margin-bottom: 12px;
+    }
+    .idea-item__section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--copper-lt);
+      margin-bottom: 4px;
+    }
+    .idea-item__section-text {
+      font-size: 12px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.5);
+    }
+    .idea-item__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .idea-item__meta-pill {
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3px 10px;
+    }
+    .idea-item__meta-pill--highlight {
+      color: var(--copper-lt);
+      border-color: var(--border-warm);
+      background: var(--copper-pale);
+    }
+    a.idea-item__video-btn {
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--copper);
+      border-radius: 20px;
+      padding: 6px 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    a.idea-item__video-btn:hover { background: #b04a16; }
+    .ideas-page__coming-soon {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.1);
+      text-align: center;
+      padding: 24px 0 8px;
+    }
+    .ideas-loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
+      padding: 48px 0;
+    }
+    .ideas-loading span {
+      width: 8px;
+      height: 8px;
+      background: var(--copper);
+      border-radius: 50%;
+      animation: ideasDot 1s infinite ease-in-out;
+    }
+    .ideas-loading span:nth-child(2) { animation-delay: 0.15s; }
+    .ideas-loading span:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes ideasDot {
+      0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+      40%            { opacity: 1;   transform: scale(1.2); }
+    }
+
+    /* ════════════════════════════════════
+       FEATURED CAROUSEL
+    ════════════════════════════════════ */
+    .featured-carousel-card {
+      padding: 0 0 16px 0 !important;
+      overflow: hidden;
+    }
+    .carousel-img-wrap {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 14px 14px 0 0;
+    }
+    .carousel-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.4s ease;
+    }
+    .carousel-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--white);
+      text-align: center;
+      margin: 14px 20px 10px;
+      letter-spacing: 0.02em;
+    }
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+    }
+    .carousel-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--border-warm);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .carousel-dot.active {
+      background: var(--copper);
+    }
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(12,12,12,0.55);
+      border: 1px solid var(--border-warm);
+      color: var(--white);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      z-index: 10;
+      user-select: none;
+      transition: background 0.2s, border-color 0.2s;
+      backdrop-filter: blur(6px);
+    }
+    .carousel-arrow:hover { background: var(--copper); border-color: var(--copper); }
+    .carousel-arrow--prev { left: 10px; }
+    .carousel-arrow--next { right: 10px; }
+
+    /* ════════════════════════════════════
+       FEATURED DETAIL PAGE
+    ════════════════════════════════════ */
+    .feat-detail__title {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.03em;
+      margin-top: 4px;
+    }
+    .feat-detail__video-wrap {
+      width: 100%;
+      margin: 0 0 20px;
+    }
+    .feat-detail__video-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--surface);
+      border: 1px dashed var(--border-warm);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--gray);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+    }
+    .feat-detail__video-placeholder svg {
+      width: 44px;
+      height: 44px;
+      color: var(--copper);
+    }
+    .feat-detail__video-wrap iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      border-radius: 14px;
+    }
+    .feat-detail__comments-section {
+      width: 100%;
+      padding: 0 0 40px;
+    }
+    .feat-detail__comments-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      color: var(--gray);
+      margin-bottom: 14px;
+    }
+    .feat-detail__comment-form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .feat-detail__comment-input,
+    .feat-detail__comment-textarea {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border-warm);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: var(--white);
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      resize: none;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .feat-detail__comment-input:focus,
+    .feat-detail__comment-textarea:focus { border-color: var(--copper); }
+    .feat-detail__comment-input::placeholder,
+    .feat-detail__comment-textarea::placeholder { color: var(--gray); }
+    .feat-detail__comment-btn {
+      align-self: flex-end;
+      background: var(--copper);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 9px 22px;
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .feat-detail__comment-btn:hover { background: var(--copper-lt); }
+    .feat-detail__comment-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+    .feat-detail__comment-author {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--copper-lt);
+      margin-bottom: 4px;
+    }
+    .feat-detail__comment-body {
+      font-size: 13px;
+      color: var(--white);
+      line-height: 1.5;
+    }
+    .feat-detail__no-comments {
+      font-size: 12px;
+      color: var(--gray);
+      text-align: center;
+      padding: 20px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════ LANG TOGGLE ════ -->
+  <div id="lang-toggle">
+    <div class="lang-btn active" data-lang="es">ES</div>
+    <div class="lang-sep"></div>
+    <div class="lang-btn" data-lang="en">EN</div>
+  </div>
+
+  <!-- ════ MAIN VIEW ════ -->
+  <div id="view-main">
+  <div class="page">
+
+    <!-- IDENTITY -->
+    <div class="identity">
+      <img class="identity__avatar" src="foto_perfil.jpeg" alt="Rufo Paredes" />
+      <p class="identity__name">Rufo Paredes</p>
+      <p class="identity__handle" data-key="handle">CEO &amp; Cofundador de Colab</p>
+      <div class="identity__socials">
+        <a href="https://www.instagram.com/rufopv" target="_blank" class="social-btn">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          <span class="social-btn__label">Instagram</span>
+        </a>
+        <a href="https://www.linkedin.com/in/rufo-paredes-vargas-65606921a" target="_blank" class="social-btn">
+          <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          <span class="social-btn__label">LinkedIn</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+
+      <!-- ══ 1. COLAB ══ -->
+      <p class="sec-label" data-key="colab-label"></p>
+      <div class="colab-card">
+        <div class="colab-card__top">
+          <img src="Mesa de trabajo 8.png" alt="Colab" style="height:54px; width:auto; display:block;" />
+          <span class="colab-card__tag">LATAM <span style="font-size:14px; font-weight:700; vertical-align:middle; line-height:1;">•</span> Creator App</span>
+        </div>
+        <p class="colab-card__desc" data-key="colab-short"></p>
+        <button class="toggle-btn" id="colab-toggle-btn" onclick="toggleSection('colab')">
+          <span id="colab-toggle-label" data-key="ver-mas"></span>
+          <span class="toggle-btn__arrow" id="colab-toggle-arrow">▾</span>
+        </button>
+        <div class="dropdown" id="colab-dropdown">
+          <div class="dropdown__inner">
+            <p class="colab-card__desc" data-key="colab-full"></p>
+          </div>
+        </div>
+        <div class="colab-card__cta" onclick="window.open('https://colab-onelink.web.app/','_blank')" style="cursor:pointer;">
+          <span class="colab-card__cta-text" data-key="colab-cta"></span>
+          <span class="colab-card__cta-arrow">→</span>
+        </div>
+      </div>
+
+      <!-- ══ 2. SOBRE MÍ ══ -->
+      <p class="sec-label" data-key="about-label"></p>
+      <div class="about-card">
+        <p class="about-card__text" data-key="about-short"></p>
+        <button class="toggle-btn" id="about-toggle-btn" onclick="toggleSection('about')">
+          <span id="about-toggle-label" data-key="ver-mas"></span>
+          <span class="toggle-btn__arrow" id="about-toggle-arrow">▾</span>
+        </button>
+        <div class="dropdown" id="about-dropdown">
+          <div class="dropdown__inner">
+            <p class="about-card__continuation" data-key="about-full"></p>
+            <p class="about-card__label" style="margin-top:20px;" data-key="hobbies-label"></p>
+            <div class="hobbies-grid">
+              <span class="hobby-tag" data-key="hobby-sports"></span>
+              <span class="hobby-tag" data-key="hobby-business"></span>
+              <span class="hobby-tag" data-key="hobby-learning"></span>
+              <span class="hobby-tag" data-key="hobby-tech"></span>
+              <span class="hobby-tag" data-key="hobby-music"></span>
+            </div>
+            <p class="about-card__label" style="margin-top:20px;" data-key="languages-label"></p>
+            <div class="hobbies-grid">
+              <span class="hobby-tag" data-key="lang-es"></span>
+              <span class="hobby-tag" data-key="lang-en"></span>
+              <span class="hobby-tag" data-key="lang-it"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ 3. DESTACADOS ══ -->
+      <p class="sec-label" data-key="featured-label"></p>
+      <div class="colab-card featured-carousel-card">
+        <div class="carousel-img-wrap" style="position:relative; cursor:pointer;" id="carousel-img-wrap">
+          <img id="carousel-img" src="Lanzamiento_Colab.jpeg" alt="" />
+          <div class="carousel-arrow carousel-arrow--prev" id="carousel-prev">&#8249;</div>
+          <div class="carousel-arrow carousel-arrow--next" id="carousel-next">&#8250;</div>
+        </div>
+        <p id="carousel-title" class="carousel-title">Lanzamiento Colab</p>
+        <div class="carousel-dots">
+          <span class="carousel-dot active" data-idx="0"></span>
+          <span class="carousel-dot" data-idx="1"></span>
+          <span class="carousel-dot" data-idx="2"></span>
+          <span class="carousel-dot" data-idx="3"></span>
+          <span class="carousel-dot" data-idx="4"></span>
+          <span class="carousel-dot" data-idx="5"></span>
+          <span class="carousel-dot" data-idx="6"></span>
+        </div>
+      </div>
+
+      <!-- ══ 4. BUSINESS IDEAS ══ -->
+      <p class="sec-label" data-key="ideas-label"></p>
+      <div class="ideas-card">
+        <div class="ideas-card__header">
+          <p class="ideas-card__title" data-key="ideas-title"></p>
+          <span class="ideas-card__badge">47 ideas</span>
+        </div>
+        <div class="ideas-card__list" id="ideas-preview-list">
+          <div class="ideas-card__row"><span class="ideas-card__num">···</span></div>
+        </div>
+        <div class="ideas-card__cta" onclick="showView('ideas')" style="cursor:pointer;">
+          <span class="ideas-card__cta-text" data-key="ideas-cta"></span>
+          <span class="ideas-card__cta-arrow">→</span>
+        </div>
+      </div>
+
+      <!-- ══ 5. CONTACTO ══ -->
+      <p class="sec-label" data-key="contact-label"></p>
+      <div class="contact-row">
+        <a href="https://www.instagram.com/rufopv" target="_blank" class="contact-btn">
+          <span class="contact-btn__icon"><img src="logo_ig.webp" alt="Instagram" style="width:22px;height:22px;object-fit:contain;vertical-align:middle;" /></span>
+          <span class="contact-btn__label">Instagram</span>
+        </a>
+        <a href="https://www.linkedin.com/in/rufo-paredes-vargas-65606921a" target="_blank" class="contact-btn">
+          <span class="contact-btn__icon"><img src="logo_linkedin.png" alt="LinkedIn" style="width:22px;height:22px;object-fit:contain;vertical-align:middle;" /></span>
+          <span class="contact-btn__label">LinkedIn</span>
+        </a>
+      </div>
+
+      <!-- EMAIL COPY ROW -->
+      <div style="display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,0.04); border:1px solid rgba(200,86,26,0.2); border-radius:12px; padding:12px 16px; margin-bottom:12px;">
+        <span style="font-family:'Jost',sans-serif; font-size:13px; color:rgba(255,255,255,0.6); letter-spacing:0.04em;">info@rufoparedes.com</span>
+        <button onclick="copyContactEmail()" id="copy-email-btn" style="background:rgba(200,86,26,0.15); border:1px solid rgba(200,86,26,0.35); border-radius:20px; padding:5px 14px; font-family:'Jost',sans-serif; font-size:10px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:#c8561a; cursor:pointer; transition:background 0.2s;">Copiar</button>
+      </div>
+
+      <form class="contact-form" id="contact-form" onsubmit="submitContactForm(event)">
+        <input class="contact-form__input" type="text" id="contact-name" placeholder="Nombre*" maxlength="80" required />
+        <input class="contact-form__input" type="email" id="contact-email" placeholder="Correo*" maxlength="120" required />
+        <input class="contact-form__input" type="tel" id="contact-phone" placeholder="Número de teléfono (opcional)" maxlength="30" />
+        <input class="contact-form__input" type="text" id="contact-subject" placeholder="Asunto*" maxlength="100" required />
+        <textarea class="contact-form__textarea" id="contact-message" placeholder="Mensaje*" rows="4" maxlength="1000" required></textarea>
+        <button class="contact-form__btn" type="submit">Enviar</button>
+        <p class="contact-form__success" id="contact-success">¡Mensaje enviado! Te responderé pronto.</p>
+        <div style="text-align:center; margin-top:-8px;">
+          <img src="RufoBot_Pointing.png" alt="RufoBot" style="width:180px; height:auto;" />
+        </div>
+      </form>
+
+      <p class="footer-brand">rufo paredes · © 2025</p>
+
+    </div><!-- /content -->
+  </div><!-- /page -->
+  </div><!-- /view-main -->
+
+  <!-- ════ IDEAS VIEW ════ -->
+  <div id="view-ideas" style="display:none;">
+    <div class="page">
+
+      <!-- BACK BUTTON -->
+      <div class="ideas-page__header">
+        <button class="back-btn" onclick="showView('main')">
+          <span class="back-btn__arrow">←</span>
+          <span class="back-btn__label" data-key="back-label"></span>
+        </button>
+        <div class="ideas-page__title-block">
+          <p class="ideas-page__eyebrow" data-key="ideas-label"></p>
+          <h1 class="ideas-page__title" data-key="ideas-page-title"></h1>
+          <p class="ideas-page__sub" data-key="ideas-page-sub"></p>
+        </div>
+      </div>
+
+      <div class="content" style="margin-top: 8px;">
+        <div id="ideas-list">
+          <div class="ideas-loading">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /view-ideas -->
+
+  <!-- ════ FEATURED DETAIL VIEW ════ -->
+  <div id="view-featured" style="display:none;">
+    <div class="page">
+
+      <div class="ideas-page__header">
+        <button class="back-btn" onclick="showView('main')">
+          <span class="back-btn__arrow">←</span>
+          <span class="back-btn__label">Volver</span>
+        </button>
+        <div class="ideas-page__title-block">
+          <p class="ideas-page__eyebrow">VIDEOS DESTACADOS</p>
+          <h1 class="feat-detail__title" id="feat-detail-title"></h1>
+        </div>
+      </div>
+
+      <!-- VIDEO -->
+      <div class="feat-detail__video-wrap" id="feat-detail-video-wrap">
+        <div class="feat-detail__video-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16" fill="currentColor" stroke="none"/></svg>
+          <p>Video próximamente</p>
+        </div>
+      </div>
+
+
+    </div>
+  </div><!-- /view-featured -->
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    /* ════════════════════════════════════
+       TRANSLATIONS
+    ════════════════════════════════════ */
+    var T = {
+      es: {
+        'colab-label':       'Lo que estamos construyendo',
+        'handle':            'CEO &amp; Cofundador de Colab',
+        'colab-short':       'Colab es una app que convierte comunidades de creadores en un motor real de crecimiento para las marcas en LATAM.',
+        'colab-full':        'Colab conecta creadores con empresas a través de 2 sistemas propietarios: Colab OG y Colab Conect.<br><br>Colab OG impulsa el tráfico de contenido orgánico. Marcas afiliadas ofrecen cortesías y descuentos que creadores pueden gozar a cambio de promoción en redes sociales.<br><br>Colab Conect gestiona campañas de forma estructurada, transparente y eficiente. Marcas postulan campañas y creadores aplican a ellas.<br><br>Colab trabaja principalmente con marcas de lifestyle, food & beverage, belleza, fitness, retail y vida nocturna.<br><br>El objetivo: convertir Colab en el principal driver de influencia en LATAM.',
+        'colab-cta':         'Descargá Colab App',
+        'ver-mas':           'Ver más',
+        'ver-menos':         'Ver menos',
+        'about-label':       'Sobre Rufo',
+        'about-inner-label': 'Sobre Rufo',
+        'about-short':       'Rufo Paredes, de nacionalidad hondureña, es CEO y cofundador de Colab, creador de contenido y embajador de Betcris. Esta combinación le permite entender la economía del creador desde ambos lados: como operador y como participante activo del ecosistema.',
+        'about-full':        'Además, se graduó con honores como ingeniero industrial y de sistemas del Tecnológico de Monterrey. Como CEO, lidera la visión estratégica de la empresa, la expansión regional, el desarrollo del modelo de negocio y la estructuración de alianzas clave. Utiliza sus conocimientos como ingeniero para crear y mejorar procesos dentro de una industria con poca estructura.<br><br>Su formación como deportista de alto rendimiento —integrando el equipo de voleibol del Tecnológico de Monterrey y la Selección Nacional de Honduras— ha definido su forma de emprender. La disciplina, la resiliencia, la competitividad y el trabajo en equipo son principios que aplica en la creación de proyectos.<br><br>Rufo es un constructor de industria: alguien que entra a espacios sin estructura y los convierte en sistemas eficientes, con estrategias claras y resultados medibles.',
+        'hobbies-label':     'Intereses',
+        'hobby-sports':      'Deportes',
+        'hobby-business':    'Negocios',
+        'hobby-learning':    'Aprender',
+        'hobby-tech':        'Tecnología',
+        'hobby-music':       'Música',
+        'languages-label':   'Idiomas',
+        'lang-es':           'Español',
+        'lang-en':           'Inglés',
+        'lang-it':           'Italiano',
+        'featured-label':    'Videos Destacados',
+        'feat-conf-title':   'Conference Talk',
+        'feat-conf-sub':     'Panel',
+        'feat-launch-title': 'Lanzamiento',
+        'feat-launch-sub':   'Evento',
+        'feat-tv-title':     'TV',
+        'feat-tv-sub':       'Aparición',
+        'ideas-label':       'Regalando Ideas de Negocio',
+        'ideas-title':       'Conseguí una<br>Idea',
+        'ideas-cta':         'Ver todas las ideas',
+        'contact-label':     'Contacto',
+        'copy-btn':          'Copiar',
+        'copied':            '¡Copiado!',
+        'back-label':        'Volver',
+        'ideas-page-title':  'Conseguí una Idea',
+        'ideas-page-sub':    'Todas las ideas documentadas. Tomá la que quieras.',
+        'tag-agency':        'Agencia',
+        'tag-marketplace':   'Marketplace',
+        'meta-effort-label': 'Ver Video',
+        'why-label':         '¿Por qué es buena idea?',
+        'how-label':         '¿Cómo implementar?',
+        'idea-47-desc':      'Agencia que usa IA para identificar, contactar y gestionar micro-influencers a escala. El cliente paga por resultados, no por horas.',
+        'idea-47-why':       'La demanda de influencer marketing sigue creciendo, pero las marcas no tienen tiempo para gestionar cientos de micro-influencers. La IA reduce el costo operativo al mínimo y permite escalar sin contratar más personal.',
+        'idea-47-how':       'Usar herramientas como Clay y GPT para identificar influencers, generar mensajes personalizados y automatizar el seguimiento. Cobrar comisión por conversión o tarifa mensual por campaña.',
+        'idea-47-effort':    'Marketing',
+        'idea-46-desc':      'Agencia especializada en generar leads calificados para empresas B2B usando contenido orgánico en TikTok. Sin ads, puro contenido estratégico.',
+        'idea-46-why':       'Las empresas B2B subestiman TikTok, pero su algoritmo favorece el contenido nuevo sobre los seguidores — una cuenta nueva puede viralizar. El costo por lead orgánico es mucho menor que el de anuncios pagados.',
+        'idea-46-how':       'Elegir un nicho B2B (contadores, dentistas, abogados), crear contenido educativo que resuelva sus problemas y convertir vistas en leads con CTAs directos a un formulario o WhatsApp.',
+        'idea-46-effort':    'Marketing',
+        'idea-45-desc':      'Plataforma que conecta marcas locales con creadores de su ciudad. Más barato que los grandes marketplaces, más relevante para el negocio.',
+        'idea-45-why':       'Los marketplaces globales están diseñados para grandes marcas. Las pymes locales necesitan creadores de su misma ciudad que conozcan su cultura y audiencia, a un precio accesible.',
+        'idea-45-how':       'Lanzar un MVP simple donde creadores se registren con sus métricas y las marcas filtren por ciudad, nicho y precio. Puede empezar con Typeform y Notion. Monetizar con suscripción mensual para marcas.',
+        'idea-45-effort':    'Tecnología',
+        'ideas-coming-soon': '+ 44 ideas próximamente'
+      },
+      en: {
+        'colab-label':       'What we\'re building',
+        'handle':            'Colab\'s Cofounder &amp; CEO',
+        'colab-short':       'Colab is an app that turns creator communities into a real growth engine for brands across LATAM.',
+        'colab-full':        'Colab connects creators with companies through 2 proprietary systems: Colab OG and Colab Connect.<br><br>Colab OG drives organic content traffic. Affiliated brands offer perks and discounts that creators enjoy in exchange for social media promotion.<br><br>Colab Connect manages campaigns in a structured, transparent, and efficient way. Brands post campaigns and creators apply to them.<br><br>Colab works primarily with lifestyle, food & beverage, beauty, fitness, retail, and nightlife brands.<br><br>The goal: make Colab the leading driver of influence in LATAM.',
+        'colab-cta':         'Download Colab App',
+        'ver-mas':           'Read more',
+        'ver-menos':         'Show less',
+        'about-label':       'About Rufo',
+        'about-inner-label': 'About Rufo',
+        'about-short':       'Rufo Paredes, Honduran, is CEO and co-founder of Colab, content creator, and Betcris brand ambassador. This combination allows him to understand the creator economy from both sides: as an operator and as an active participant in the ecosystem.',
+        'about-full':        'He also graduated with honors as an industrial and systems engineer from Tecnológico de Monterrey. As CEO, he leads the company\'s strategic vision, regional expansion, business model development, and key partnership structuring. He applies his engineering background to build and improve processes in an industry with little formal structure.<br><br>His background as a high-performance athlete — playing volleyball for Tecnológico de Monterrey and the Honduran National Team — has shaped his entrepreneurial approach. Discipline, resilience, competitiveness, and teamwork are principles he applies to every project he builds.<br><br>Rufo is an industry builder: someone who enters unstructured spaces and turns them into efficient systems with clear strategies and measurable results.',
+        'hobbies-label':     'Interests',
+        'hobby-sports':      'Sports',
+        'hobby-business':    'Business',
+        'hobby-learning':    'Learning',
+        'hobby-tech':        'Technology',
+        'hobby-music':       'Music',
+        'languages-label':   'Languages',
+        'lang-es':           'Spanish',
+        'lang-en':           'English',
+        'lang-it':           'Italian',
+        'featured-label':    'Featured Videos',
+        'feat-conf-title':   'Conference Talk',
+        'feat-conf-sub':     'Panel',
+        'feat-launch-title': 'Launch',
+        'feat-launch-sub':   'Event',
+        'feat-tv-title':     'TV',
+        'feat-tv-sub':       'Appearance',
+        'ideas-label':       'Gifting Business Ideas',
+        'ideas-title':       'Grab an<br>Idea',
+        'ideas-cta':         'Browse all ideas',
+        'contact-label':     'Contact',
+        'copy-btn':          'Copy',
+        'copied':            'Copied!',
+        'back-label':        'Back',
+        'ideas-page-title':  'Grab an Idea',
+        'ideas-page-sub':    'All documented ideas. Take whichever you want.',
+        'tag-agency':        'Agency',
+        'tag-marketplace':   'Marketplace',
+        'meta-effort-label': 'Watch Video',
+        'why-label':         'Why is it a good idea?',
+        'how-label':         'How to implement?',
+        'idea-47-desc':      'Agency that uses AI to identify, reach out to, and manage micro-influencers at scale. The client pays for results, not hours.',
+        'idea-47-why':       'Influencer marketing demand keeps growing, but brands don\'t have time to manage hundreds of micro-influencers. AI reduces operational costs to a minimum and allows scaling without hiring more staff.',
+        'idea-47-how':       'Use tools like Clay and GPT to identify influencers, generate personalized messages, and automate follow-ups. Charge a commission per conversion or a monthly fee per campaign.',
+        'idea-47-effort':    'Marketing',
+        'idea-46-desc':      'Agency specialized in generating qualified B2B leads using organic TikTok content. No ads, just strategic content.',
+        'idea-46-why':       'B2B companies underestimate TikTok, but its algorithm favors new content over followers — a new account can go viral. The cost per organic lead is much lower than paid ads.',
+        'idea-46-how':       'Choose a B2B niche (accountants, dentists, lawyers), create educational content that solves their problems, and convert views into leads with direct CTAs to a form or WhatsApp.',
+        'idea-46-effort':    'Marketing',
+        'idea-45-desc':      'Platform connecting local brands with creators in their city. Cheaper than big marketplaces, more relevant for the business.',
+        'idea-45-why':       'Global marketplaces are designed for big brands. Local SMBs need creators from their own city who understand their culture and audience, at an affordable price.',
+        'idea-45-how':       'Launch a simple MVP where creators register with their metrics and brands filter by city, niche, and price. Can start with Typeform and Notion. Monetize with a monthly subscription for brands.',
+        'idea-45-effort':    'Technology',
+        'ideas-coming-soon': '+ 44 more ideas coming soon'
+      }
+    };
+
+    /* ════════════════════════════════════
+       STATE
+    ════════════════════════════════════ */
+    var lang = 'es';
+    var dropdowns = { colab: false, about: false };
+
+    /* ════════════════════════════════════
+       APPLY LANGUAGE
+    ════════════════════════════════════ */
+    function applyLang(newLang) {
+      lang = newLang;
+      var t = T[lang];
+
+      /* update all data-key elements */
+      var els = document.querySelectorAll('[data-key]');
+      for (var i = 0; i < els.length; i++) {
+        var key = els[i].getAttribute('data-key');
+        if (t[key] !== undefined) {
+          els[i].innerHTML = t[key];
+        }
+      }
+
+      /* toggle button labels — respect open/closed state */
+      document.getElementById('colab-toggle-label').innerHTML =
+        dropdowns.colab ? t['ver-menos'] : t['ver-mas'];
+      document.getElementById('about-toggle-label').innerHTML =
+        dropdowns.about ? t['ver-menos'] : t['ver-mas'];
+
+      /* copy button */
+      var copyBtn = document.getElementById('copy-btn');
+      if (copyBtn) copyBtn.innerHTML = t['copy-btn'];
+
+      /* active lang button */
+      var btns = document.querySelectorAll('#lang-toggle .lang-btn');
+      for (var j = 0; j < btns.length; j++) {
+        btns[j].classList.toggle('active', btns[j].getAttribute('data-lang') === lang);
+      }
+
+      document.documentElement.lang = lang;
+
+      /* carousel title translation */
+      if (typeof carouselSlides !== 'undefined') {
+        var s = carouselSlides[carouselIdx];
+        document.getElementById('carousel-title').textContent = lang === 'en' ? (s.titleEn || s.title) : s.title;
+        var detailTitle = document.getElementById('feat-detail-title');
+        if (detailTitle.textContent) {
+          detailTitle.textContent = lang === 'en' ? (s.titleEn || s.title) : s.title;
+        }
+      }
+
+      /* reload ideas in new language if already loaded */
+      if (typeof lastIdeasData !== 'undefined' && lastIdeasData) {
+        renderIdeas(lastIdeasData);
+      }
+    }
+
+    /* ════════════════════════════════════
+       TOGGLE DROPDOWN
+    ════════════════════════════════════ */
+    function toggleSection(id) {
+      dropdowns[id] = !dropdowns[id];
+      var isOpen    = dropdowns[id];
+      var dropdown  = document.getElementById(id + '-dropdown');
+      var arrow     = document.getElementById(id + '-toggle-arrow');
+      var label     = document.getElementById(id + '-toggle-label');
+      var inner     = dropdown.querySelector('.dropdown__inner');
+
+      if (isOpen) {
+        dropdown.style.maxHeight  = (inner.scrollHeight + 40) + 'px';
+        dropdown.style.opacity    = '1';
+        arrow.style.transform     = 'rotate(180deg)';
+        label.innerHTML           = T[lang]['ver-menos'];
+      } else {
+        dropdown.style.maxHeight  = '0';
+        dropdown.style.opacity    = '0';
+        arrow.style.transform     = 'rotate(0deg)';
+        label.innerHTML           = T[lang]['ver-mas'];
+      }
+    }
+
+    /* ════════════════════════════════════
+       COPY EMAIL
+    ════════════════════════════════════ */
+    function copyContactEmail() {
+      navigator.clipboard.writeText('info@rufoparedes.com').then(function() {
+        var btn = document.getElementById('copy-email-btn');
+        btn.textContent = '¡Copiado!';
+        btn.style.background = 'rgba(200,86,26,0.3)';
+        setTimeout(function() {
+          btn.textContent = 'Copiar';
+          btn.style.background = 'rgba(200,86,26,0.15)';
+        }, 2000);
+      });
+    }
+
+    function submitContactForm(e) {
+      e.preventDefault();
+      const nameField    = document.getElementById('contact-name');
+      const emailField   = document.getElementById('contact-email');
+      const messageField = document.getElementById('contact-message');
+      let valid = true;
+      const subjectField = document.getElementById('contact-subject');
+      [nameField, emailField, subjectField, messageField].forEach(f => {
+        if (!f.value.trim()) { f.classList.add('contact-form__input--error'); valid = false; }
+        else f.classList.remove('contact-form__input--error');
+      });
+      if (!valid) return;
+
+      const name    = nameField.value.trim();
+      const email   = emailField.value.trim();
+      const phone   = document.getElementById('contact-phone').value.trim();
+      const subject = subjectField.value.trim();
+      const message = messageField.value.trim();
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+      fetch('https://rufoparedesemail.paredesrufo.workers.dev', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre: name, correo: email, telefono: phone, asunto: subject, mensaje: message })
+      })
+      .then(res => {
+        if (res.ok) {
+          document.getElementById('contact-form').reset();
+          const success = document.getElementById('contact-success');
+          success.style.display = 'block';
+          setTimeout(() => { success.style.display = 'none'; }, 4000);
+        } else {
+          alert('Hubo un error al enviar. Intenta de nuevo.');
+        }
+      })
+      .catch(() => alert('Hubo un error al enviar. Intenta de nuevo.'))
+      .finally(() => {
+        btn.disabled = false;
+        btn.textContent = 'Enviar';
+      });
+    }
+
+    ['contact-name', 'contact-email', 'contact-subject', 'contact-message'].forEach(id => {
+      document.getElementById(id).addEventListener('input', function() {
+        this.classList.remove('contact-form__input--error');
+      });
+    });
+
+    /* ════════════════════════════════════
+       LANG TOGGLE CLICK
+    ════════════════════════════════════ */
+    document.getElementById('lang-toggle').addEventListener('click', function(e) {
+      var btn = e.target.closest('.lang-btn');
+      if (btn) {
+        applyLang(btn.getAttribute('data-lang'));
+      } else {
+        applyLang(lang === 'es' ? 'en' : 'es');
+      }
+    });
+
+    /* ════════════════════════════════════
+       SHOW VIEW
+    ════════════════════════════════════ */
+    function showView(id, pushState) {
+      // Stop any playing video/audio before switching views
+      var videoWrap = document.getElementById('feat-detail-video-wrap');
+      if (videoWrap) videoWrap.innerHTML = '';
+
+      document.getElementById('view-main').style.display     = id === 'main'     ? 'block' : 'none';
+      document.getElementById('view-ideas').style.display    = id === 'ideas'    ? 'block' : 'none';
+      document.getElementById('view-featured').style.display = id === 'featured' ? 'block' : 'none';
+      window.scrollTo(0, 0);
+      if (id === 'ideas') loadIdeas();
+      // Update URL hash
+      if (pushState !== false) {
+        var hash = id === 'main' ? '' : '#' + id;
+        history.pushState({ view: id }, '', window.location.pathname + hash);
+      }
+    }
+
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', function(e) {
+      var id = (e.state && e.state.view) ? e.state.view : 'main';
+      showView(id, false);
+    });
+
+    // On load, read hash to open correct view
+    (function() {
+      var hash = window.location.hash.replace('#', '');
+      var validViews = ['ideas', 'featured'];
+      if (validViews.indexOf(hash) !== -1) {
+        showView(hash, false);
+      }
+    })();
+    loadIdeas(); // load on startup to populate preview
+
+    /* ════════════════════════════════════
+       IDEAS — GOOGLE SHEETS CSV LOADER
+    ════════════════════════════════════ */
+    var IDEAS_CSV_RAW = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTLA7gRUMbfgT0FFeKWGSIWqQu5OQNbvU_V6-_6vNk0Du8CmE5-no_iRgz63SsX7xRg5m33yc_NzJ4-/pub?output=csv';
+    var IDEAS_CSV_PROXY = 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(IDEAS_CSV_RAW);
+
+    function parseCSV(text) {
+      var rows = [];
+      var row = [];
+      var field = '';
+      var inQuotes = false;
+      var i = 0;
+      while (i < text.length) {
+        var ch = text[i];
+        if (inQuotes) {
+          if (ch === '"' && text[i + 1] === '"') { field += '"'; i += 2; continue; }
+          if (ch === '"') { inQuotes = false; i++; continue; }
+          field += ch;
+        } else {
+          if (ch === '"') { inQuotes = true; i++; continue; }
+          if (ch === ',') { row.push(field.trim()); field = ''; i++; continue; }
+          if (ch === '\n') {
+            row.push(field.trim());
+            rows.push(row);
+            row = []; field = '';
+            i++;
+            continue;
+          }
+          if (ch === '\r') { i++; continue; }
+          field += ch;
+        }
+        i++;
+      }
+      if (field || row.length) { row.push(field.trim()); rows.push(row); }
+      return rows;
+    }
+
+    function renderIdeas(rows) {
+      var list = document.getElementById('ideas-list');
+      var isEn = lang === 'en';
+      var whyLabel = isEn ? 'Why is it a good idea?' : '¿Por qué es buena idea?';
+      var howLabel = isEn ? 'How to implement?'      : '¿Cómo implementar?';
+      var btnLabel = isEn ? 'Watch Video'            : 'Ver Video';
+
+      // Map column headers to indexes
+      var headers = rows[0] || [];
+      var idx = {};
+      for (var h = 0; h < headers.length; h++) {
+        idx[headers[h].trim()] = h;
+      }
+
+      // Helper to get column value with fallback
+      function col(row, nameEs, nameEn) {
+        var name = (isEn && idx[nameEn] !== undefined) ? nameEn : nameEs;
+        return (idx[name] !== undefined ? row[idx[name]] : '') || '';
+      }
+
+      // collect valid data rows
+      var data = [];
+      for (var r = 1; r < rows.length; r++) {
+        var cols = rows[r];
+        if (!cols || !col(cols, 'Título ES', 'Título EN')) continue;
+        data.push(cols);
+      }
+      data.sort(function(a, b) {
+        return parseFloat(b[idx['Número']||0]||0) - parseFloat(a[idx['Número']||0]||0);
+      });
+
+      // update badge count
+      var badge = document.querySelector('.ideas-card__badge');
+      if (badge) badge.textContent = data.length + ' ideas';
+
+      // update preview list (top 3) — always in ES
+      var preview = document.getElementById('ideas-preview-list');
+      if (preview) {
+        var pHtml = '';
+        for (var i = 0; i < Math.min(3, data.length); i++) {
+          var num = data[i][idx['Número']||0] || '';
+          var title = col(data[i], 'Título ES', 'Título EN');
+          pHtml += '<div class="ideas-card__row"><span class="ideas-card__num">#' + num + '</span><span class="ideas-card__item">' + title + '</span></div>';
+        }
+        preview.innerHTML = pHtml || '';
+      }
+
+      // render full ideas list
+      var html = '';
+      for (var j = 0; j < data.length; j++) {
+        var c = data[j];
+        var num2    = c[idx['Número']||0] || '';
+        var title2  = col(c, 'Título ES',      'Título EN');
+        var desc    = col(c, 'Descripción ES', 'Descripción EN');
+        var why     = col(c, 'Porque ES',      'Porque EN');
+        var how     = col(c, 'Como ES',        'Como EN');
+        var industry = col(c, 'Industria ES',  'Industria EN');
+        var link    = (idx['Link'] !== undefined ? c[idx['Link']] : '') || '';
+
+        html += '<div class="idea-item">';
+        html += '<h2 class="idea-item__title"><span class="idea-item__num">#' + num2 + '</span> ' + title2 + '</h2>';
+        if (desc)     html += '<p class="idea-item__desc">' + desc + '</p>';
+        if (why)      html += '<div class="idea-item__section"><p class="idea-item__section-label">' + whyLabel + '</p><p class="idea-item__section-text">' + why + '</p></div>';
+        if (how)      html += '<div class="idea-item__section"><p class="idea-item__section-label">' + howLabel + '</p><p class="idea-item__section-text">' + how + '</p></div>';
+        html += '<div class="idea-item__footer">';
+        if (industry) html += '<span class="idea-item__meta-pill idea-item__meta-pill--highlight">' + industry + '</span>';
+        if (link)     html += '<a href="' + link + '" target="_blank" class="idea-item__video-btn">' + btnLabel + '</a>';
+        html += '</div></div>';
+      }
+      if (list) list.innerHTML = html || '<p style="color:#888;text-align:center;padding:32px 0;">No hay ideas aún.</p>';
+    }
+
+    var lastIdeasData = null;
+
+    function loadIdeas() {
+      var list = document.getElementById('ideas-list');
+      if (list) list.innerHTML = '<div class="ideas-loading"><span></span><span></span><span></span></div>';
+      var ts = Date.now();
+      fetch(IDEAS_CSV_RAW + '&t=' + ts)
+        .then(function(r) { if (!r.ok) throw new Error('direct failed'); return r.text(); })
+        .catch(function() { return fetch(IDEAS_CSV_PROXY + '&t=' + ts).then(function(r) { return r.text(); }); })
+        .then(function(text) { lastIdeasData = parseCSV(text); renderIdeas(lastIdeasData); })
+        .catch(function(e) {
+          console.error('loadIdeas error:', e);
+          if (list) list.innerHTML = '<p style="color:#888;text-align:center;padding:32px 0;">Error cargando ideas. Intenta de nuevo.</p>';
+        });
+    }
+
+  // ── FEATURED CAROUSEL ──
+  var carouselSlides = [
+    { slug: 'lanzamientos-colab', img: 'Lanzamiento_Colab.jpeg', title: 'Lanzamientos Colab', titleEn: 'Colab Launches', youtube: 'nPXH3b0IMxY', videoTitle: 'Lanzamiento Colab', videoDesc: 'Tegucigalpa, donde todo inició',
+      extraVideos: [
+        { title: 'Lanzamiento Colab San Pedro Sula', video: 'sanpedrosula.MP4' },
+        { title: 'Lanzamiento Colab Roatán',         youtube: 'Hkd39Q6puXc' },
+      ]
+    },
+    { slug: 'entrevista-mananas-del-cinco', img: 'mananasdelcinco.jpeg', title: 'Entrevista Las Mañanas del Cinco', titleEn: 'Interview Las Mañanas del Cinco', youtube: '-rcJO00uOis' },
+    { slug: 'entrevista-revista-estilo',    img: 'Entrevista_Estilo.jpeg', title: 'Entrevista Revista Estilo', titleEn: 'Estilo Magazine Interview', video: 'Estilo_RPV.mp4' },
+    { slug: 'conferencia-colab-ast',        img: 'escuela_americana.jpeg', title: 'Conferencia Colab AST', titleEn: 'Colab AST Conference', youtube: 'k8qlqYMw-Vc' },
+    { slug: 'conferencia-colab-unitec',     img: 'Conferencia_Colab_Unitec.jpeg', title: 'Conferencia Colab Unitec', titleEn: 'Colab Unitec Conference', objectPosition: 'center 20%', youtube: 'VxHjOQbnKio' },
+    { slug: 'invitado-honor-absh',          img: 'invitado_honor.jpeg', title: 'Invitado de Honor ABSH Basketball 2025', titleEn: 'Honor Guest ABSH Basketball 2025', youtube: '1hfz7ylZQ5k' },
+    { slug: 'televicentro-seleccion',       img: 'DTVC_RPV_Cover.png', title: 'Antesala de la Selección de Honduras en Televicentro', titleEn: 'Honduras National Team Preview on Televicentro', youtube: 'ZOqrIjjHQ6g' },
+  ];
+  var carouselIdx = 0;
+  var carouselImg   = document.getElementById('carousel-img');
+  var carouselTitle = document.getElementById('carousel-title');
+  var carouselDots  = document.querySelectorAll('.carousel-dot');
+
+  function goToSlide(idx) {
+    carouselIdx = idx;
+    carouselImg.style.opacity = '0';
+    setTimeout(function() {
+      carouselImg.src = carouselSlides[idx].img;
+      carouselImg.style.objectPosition = carouselSlides[idx].objectPosition || 'center center';
+      carouselTitle.textContent = lang === 'en' ? (carouselSlides[idx].titleEn || carouselSlides[idx].title) : carouselSlides[idx].title;
+      carouselImg.style.opacity = '1';
+    }, 220);
+    carouselDots.forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+  }
+
+  carouselDots.forEach(function(d) { d.addEventListener('click', function() { goToSlide(+d.dataset.idx); }); });
+  document.getElementById('carousel-prev').addEventListener('click', function() { goToSlide((carouselIdx - 1 + carouselSlides.length) % carouselSlides.length); });
+  document.getElementById('carousel-next').addEventListener('click', function() { goToSlide((carouselIdx + 1) % carouselSlides.length); });
+  setInterval(function() { goToSlide((carouselIdx + 1) % carouselSlides.length); }, 5000);
+
+  function openFeaturedDetail(idx, pushState) {
+    var slide = carouselSlides[idx];
+    document.getElementById('feat-detail-title').textContent = lang === 'en' ? (slide.titleEn || slide.title) : slide.title;
+    var videoWrap = document.getElementById('feat-detail-video-wrap');
+    if (slide.video || slide.youtube) {
+      var videoHtml = '';
+      if (slide.videoTitle || slide.videoDesc) {
+        videoHtml += '<div style="margin-bottom:10px;">';
+        if (slide.videoTitle) videoHtml += '<p style="font-size:15px;font-weight:600;color:#fff;margin:0 0 4px;">' + slide.videoTitle + '</p>';
+        if (slide.videoDesc)  videoHtml += '<p style="font-size:13px;color:#888;margin:0;">' + slide.videoDesc + '</p>';
+        videoHtml += '</div>';
+      }
+      if (slide.youtube) {
+        videoHtml += '<iframe style="width:100%;aspect-ratio:16/9;border-radius:14px;border:none;" src="https://www.youtube.com/embed/' + slide.youtube + '" allowfullscreen></iframe>';
+      } else {
+        videoHtml += '<video controls style="width:100%;aspect-ratio:16/9;border-radius:14px;background:#000;" src="' + slide.video + '"></video>';
+      }
+      if (slide.extraVideos) {
+        slide.extraVideos.forEach(function(ev) {
+          videoHtml += '<div style="margin-top:28px;">';
+          videoHtml += '<p style="font-size:15px;font-weight:600;color:#fff;margin:0 0 10px;">' + ev.title + '</p>';
+          if (ev.youtube) {
+            videoHtml += '<iframe style="width:100%;aspect-ratio:16/9;border-radius:14px;border:none;" src="https://www.youtube.com/embed/' + ev.youtube + '" allowfullscreen></iframe>';
+          } else if (ev.video) {
+            videoHtml += '<video controls style="width:100%;aspect-ratio:16/9;border-radius:14px;background:#000;" src="' + ev.video + '"></video>';
+          } else {
+            videoHtml += '<div style="width:100%;aspect-ratio:16/9;background:#141414;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#888;font-size:13px;letter-spacing:0.08em;">Video próximamente</div>';
+          }
+          videoHtml += '</div>';
+        });
+      }
+      videoWrap.innerHTML = videoHtml;
+    } else {
+      videoWrap.innerHTML = '<div class="feat-detail__video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16" fill="currentColor" stroke="none"/></svg><p>Video pr\u00f3ximamente</p></div>';
+    }
+    // Update URL with slide slug
+    if (pushState !== false && slide.slug) {
+      history.pushState({ view: 'featured', slug: slide.slug }, '', '#featured/' + slide.slug);
+    }
+    document.getElementById('view-main').style.display     = 'none';
+    document.getElementById('view-ideas').style.display    = 'none';
+    document.getElementById('view-featured').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+
+  document.getElementById('carousel-img-wrap').addEventListener('click', function(e) {
+    if (e.target.classList.contains('carousel-arrow')) return;
+    openFeaturedDetail(carouselIdx);
+  });
+
+    /* INIT */
+    applyLang('es');
+
+    // Read hash on load to open correct view/slide
+    (function() {
+      var hash = window.location.hash.replace('#', '');
+      if (!hash) return;
+      if (hash === 'ideas') { showView('ideas', false); return; }
+      if (hash.indexOf('featured/') === 0) {
+        var slug = hash.replace('featured/', '');
+        var idx = carouselSlides.findIndex(function(s) { return s.slug === slug; });
+        if (idx !== -1) openFeaturedDetail(idx, false);
+        else showView('featured', false);
+        return;
+      }
+      if (hash === 'featured') { showView('featured', false); }
+    })();
+  </script>
+
+</body>
+</html>
